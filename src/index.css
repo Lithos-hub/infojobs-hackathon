@@ -1,0 +1,218 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Fonts */
+
+@font-face {
+	font-family: 'SF Pro';
+	src: url('/fonts/SF-Pro.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'SF Pro Italic';
+	src: url('/fonts/SF-Pro-Italic.ttf') format('truetype');
+	font-weight: bold;
+}
+
+/* Common */
+
+html,
+body {
+	@apply bg-slate-100 dark:bg-black text-primary-1;
+}
+
+* {
+	@apply font-sfPro;
+}
+
+input::placeholder,
+textarea::placeholder {
+	@apply text-primary-1;
+}
+
+/* width */
+::-webkit-scrollbar {
+	width: 7px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+	background: #101010;
+	border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+	background: #167db7;
+	border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+	background: #555;
+}
+
+/* Special classes */
+
+.recording {
+	animation: recording 1s infinite alternate-reverse;
+}
+
+.loader-horizontal,
+.loader-horizontal:before,
+.loader-horizontal:after {
+	border-radius: 50%;
+	width: 2.5em;
+	height: 2.5em;
+	animation-fill-mode: both;
+	animation: bblFadInOut 1.8s infinite ease-in-out;
+}
+.loader-horizontal {
+	color: cyan;
+	font-size: 7px;
+	position: relative;
+	text-indent: -9999em;
+	transform: translateZ(0);
+	animation-delay: -0.16s;
+}
+.loader-horizontal:before,
+.loader-horizontal:after {
+	content: '';
+	position: absolute;
+	top: 0;
+}
+.loader-horizontal:before {
+	left: -3.5em;
+	animation-delay: -0.32s;
+}
+.loader-horizontal:after {
+	left: 3.5em;
+}
+
+.loader-circular {
+	transform: rotateZ(45deg);
+	border-radius: 50%;
+	width: 48px;
+	height: 48px;
+	color: cyan;
+}
+.loader-circular:before,
+.loader-circular:after {
+	content: '';
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: inherit;
+	height: inherit;
+	border-radius: 50%;
+	transform: rotateX(70deg);
+	animation: 1s spin linear infinite;
+}
+.loader-circular:after {
+	color: #167db7;
+	transform: rotateY(70deg);
+	animation-delay: 0.4s;
+}
+
+.speech-bubble {
+	--r: 25px; /* the radius */
+	--t: 60px; /* the size of the tail */
+	-webkit-mask: radial-gradient(var(--t) at var(--_d) 0, #0000 98%, #000 102%) var(--_d) 100% /
+			calc(100% - var(--r)) var(--t) no-repeat,
+		conic-gradient(at var(--r) var(--r), #000 75%, #0000 0) calc(var(--r) / -2) calc(var(--r) / -2)
+			padding-box,
+		radial-gradient(50% 50%, #000 98%, #0000 101%) 0 0 / var(--r) var(--r) space padding-box;
+	--_d: 0%;
+	border-left: var(--t) solid #0000;
+	margin-right: var(--t);
+	place-self: start;
+}
+
+.gpt-response {
+	@apply text-white;
+}
+
+.gpt-response ul {
+	@apply list-disc list-inside;
+}
+
+.gpt-response li {
+	@apply my-5;
+}
+
+.gpt-response strong {
+	@apply text-primary-1;
+}
+
+.job-category-chip {
+	@apply text-white rounded-bl-2xl p-2 px-5 border text-xs text-center;
+}
+/* Animations */
+
+@keyframes rotate {
+	0% {
+		transform: translate(-50%, -50%) rotateZ(0deg);
+	}
+	100% {
+		transform: translate(-50%, -50%) rotateZ(360deg);
+	}
+}
+
+@keyframes rotateccw {
+	0% {
+		transform: translate(-50%, -50%) rotate(0deg);
+	}
+	100% {
+		transform: translate(-50%, -50%) rotate(-360deg);
+	}
+}
+
+@keyframes spin {
+	0%,
+	100% {
+		box-shadow: 0.2em 0px 0 0px currentcolor;
+	}
+	12% {
+		box-shadow: 0.2em 0.2em 0 0 currentcolor;
+	}
+	25% {
+		box-shadow: 0 0.2em 0 0px currentcolor;
+	}
+	37% {
+		box-shadow: -0.2em 0.2em 0 0 currentcolor;
+	}
+	50% {
+		box-shadow: -0.2em 0 0 0 currentcolor;
+	}
+	62% {
+		box-shadow: -0.2em -0.2em 0 0 currentcolor;
+	}
+	75% {
+		box-shadow: 0px -0.2em 0 0 currentcolor;
+	}
+	87% {
+		box-shadow: 0.2em -0.2em 0 0 currentcolor;
+	}
+}
+
+@keyframes bblFadInOut {
+	0%,
+	80%,
+	100% {
+		box-shadow: 0 2.5em 0 -1.3em;
+	}
+	40% {
+		box-shadow: 0 2.5em 0 0;
+	}
+}
+
+@keyframes recording {
+	from {
+		@apply bg-red-800/20 border-2 border-red-500 text-red-400;
+	}
+	to {
+		@apply bg-red-800/40 border-2 border-red-200 text-red-200;
+	}
+}
