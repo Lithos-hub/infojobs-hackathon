@@ -1,4 +1,5 @@
-import { Home, Offers } from '@/features';
+import { Home, OffersList } from '@/features';
+import OfferDetail from '@/features/OfferDetail/OfferDetail';
 import { useAppDispatch } from '@/hooks';
 import { MainLayout } from '@/layouts/MainLayout';
 import { toggleDarkMode } from '@/store/slices/uiSlice';
@@ -23,7 +24,8 @@ const AppRouter = () => {
 		<MainLayout>
 			<Routes>
 				<Route path='/' element={<Home />} />
-				<Route path='/Offers' element={<Offers />} />
+				<Route path='/offers' element={<OffersList />} />
+				<Route path='/offer/:id' element={<OfferDetail />} />
 			</Routes>
 		</MainLayout>
 	);

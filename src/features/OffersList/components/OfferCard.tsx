@@ -1,4 +1,4 @@
-import { Button, Icon } from '@/components';
+import { Icon } from '@/components';
 import { Offer } from '@/models';
 import { FC, useMemo } from 'react';
 import CategoryChip from './CategoryChip';
@@ -18,7 +18,7 @@ const OfferCard: FC<Offer> = ({
 	const publishedDate = useMemo(() => new Date(published).toLocaleDateString(), [published]);
 	const simplifiedTitle = useMemo(() => {
 		if (title.length > 50) {
-			return `${title.slice(0, 40)}...`;
+			return `${title.slice(0, 35)}...`;
 		} else {
 			return title;
 		}
@@ -48,10 +48,10 @@ const OfferCard: FC<Offer> = ({
 						</div>
 						<div className='py-5 flex flex-col'>
 							<h2 className='text-black dark:text-cyan-500 font-bold text-xs'>{author.name}</h2>
-							<h3 className='text-white font-bold text-xl'>{simplifiedTitle}</h3>
+							<h3 className='text-white font-bold text-lg'>{simplifiedTitle}</h3>
 						</div>
 					</div>
-					<div className='bg-slate-900 p-5 mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 justify-center items-center text-white dark:text-cyan-500 text-center'>
+					<div className='bg-slate-900 p-3 mx-auto w-full flex flex-wrap gap-3 justify-center items-center text-white dark:text-cyan-500 text-center'>
 						<div className='flex gap-1 items-center'>
 							<Icon name='contract' className='h-5 w-5' />
 							<small className='text-[10px]'>{contractType.value}</small>

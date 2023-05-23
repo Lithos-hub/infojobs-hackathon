@@ -71,14 +71,14 @@ const SearchBox: FC<Props> = ({ ...rest }) => {
 						message: values.searchQuery || (transcript.text as string),
 					})) as string;
 
-					const queryParams = response.split('?')[1];
+					const queryRegex = /\?(.*)/;
+					const queryParams = queryRegex.exec(response)?.[1];
 
-					if (queryParams) {
-						navigate(`/offers?${queryParams}`);
-					} else {
-						setIsError(true);
-					}
+					console.log('Query params => ', queryParams);
 
+					if (!queryParams) return setIsError(true);
+
+					navigate(`/offers?${queryParams}`);
 					setIsFinished(true);
 				}}
 			>
