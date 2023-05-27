@@ -71,14 +71,7 @@ const SearchBox: FC<Props> = ({ ...rest }) => {
 						message: values.searchQuery || (transcript.text as string),
 					})) as string;
 
-					const queryRegex = /\?(.*)/;
-					const queryParams = queryRegex.exec(response)?.[1];
-
-					console.log('Query params => ', queryParams);
-
-					if (!queryParams) return setIsError(true);
-
-					navigate(`/offers?${queryParams}`);
+					navigate(`/offers?${response}`);
 					setIsFinished(true);
 				}}
 			>

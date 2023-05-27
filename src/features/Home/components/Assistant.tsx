@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 
 import { useChatGPT } from '@/services/apis';
 
-import { Button, Icon, Loader, Textarea } from '@/components';
+import { Button, Icon, Loader, Overlay, Textarea } from '@/components';
 
 interface Props {
 	onClose: () => void;
@@ -46,16 +46,7 @@ const Assistant: FC<Props> = ({ onClose }) => {
 
 	return (
 		<>
-			<motion.div
-				initial={{
-					opacity: 0,
-				}}
-				animate={{
-					opacity: 1,
-				}}
-				className='fixed top-0 h-screen w-screen bg-black/50 backdrop-blur z-50'
-				onClick={onClose}
-			/>
+			<Overlay onClose={onClose} />
 			<motion.div
 				ref={wrapperRef}
 				initial={{
@@ -72,8 +63,8 @@ const Assistant: FC<Props> = ({ onClose }) => {
 					type: 'spring',
 					stiffness: 80,
 				}}
-				className='fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] min-h-[500px] rounded-[30px] flex flex-col justify-between 
-			gap-5 px-10 bg-slate-200 dark:bg-slate-950 shadow-xl shadow-black/30 backdrop-blur z-50'
+				className='fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full md:w-[80vw] min-h-[500px] h-screen md:h-auto md:rounded-[30px] flex flex-col justify-between 
+			gap-5 px-10 bg-slate-200 dark:bg-slate-950 shadow-xl shadow-black/30 backdrop-blur z-50 overflow-y-auto'
 			>
 				<Icon
 					name='close'
@@ -82,32 +73,34 @@ const Assistant: FC<Props> = ({ onClose }) => {
 				/>
 
 				{/* Conditional flow:
-				1. Show a textarea to write the question (isFinished = false && isSubmitting = false)
-				2. Show the Loader (isSubmitting = true && isFinished = false)
-				2-a. If error, show error message (isError = true && isSubmitting = false)
-				4. Show the answer by chatGPT (isFinished = true && isSubmitting = false)
-				5. If the user wants to ask another question, go to step 1 (click on Reintentar button)
-
-			*/}
+					1. Show a textarea to write the question (isFinished = false && isSubmitting = false)
+					2. Show the Loader (isSubmitting = true && isFinished = false)
+					2-a. If error, show error message (isError = true && isSubmitting = false)
+					4. Show the answer by chatGPT (isFinished = true && isSubmitting = false)
+					5. If the user wants to ask another question, go to step 1 (click on Reintentar button)
+				*/}
 
 				{!isFinished && !isSubmitting ? (
 					<section className='pt-20'>
-						<img
-							src='/img/assistant-robot.png'
-							className='absolute top-20 left-20 mix-blend-color-multiply w-[200px] rounded-br-[30px]'
-						/>
-						<div className='relative speech-bubble flex flex-col gap-2 bg-primary-1 dark:bg-cyan-900/50 w-auto text-left rounded-[30px] p-5 ml-[230px]'>
-							<h2 className='text-lg md:text-xl font-bold text-white dark:text-primary-1'>
-								¡Hola! Soy tu{' '}
-								<span className='text-cyan-300 dark:text-cyan-500'>asistente laboral</span> virtual
-							</h2>
-							{!isFinished && !isSubmitting && (
-								<p className='font-light text-white'>
-									Escribe en el cuadro de texto de abajo las dudas que tengas acerca del mundo
-									laboral, cuestiones legales, etc. También puedo darte consejos para mejorar tu
-									currículum o para prepararte para una entrevista de trabajo.
-								</p>
-							)}
+						<div className='flex flex-col gap-10 md:gap-0 md:flex-row items-center'>
+							<img
+								src='/img/assistant-robot.png'
+								className='max-w-[200px] rounded-br-[30px] object-cover'
+							/>
+							<div className='relative speech-bubble flex flex-col gap-2 bg-primary-1 dark:bg-cyan-900/50 w-auto text-left rounded-[30px] p-5'>
+								<h2 className='text-lg md:text-xl font-bold text-white dark:text-primary-1'>
+									¡Hola! Soy tu{' '}
+									<span className='text-cyan-300 dark:text-cyan-500'>asistente laboral</span>{' '}
+									virtual
+								</h2>
+								{!isFinished && !isSubmitting && (
+									<p className='font-light text-white'>
+										Escribe en el cuadro de texto de abajo las dudas que tengas acerca del mundo
+										laboral, cuestiones legales, etc. También puedo darte consejos para mejorar tu
+										currículum o para prepararte para una entrevista de trabajo.
+									</p>
+								)}
+							</div>
 						</div>
 						<Formik
 							initialValues={{
@@ -132,7 +125,7 @@ const Assistant: FC<Props> = ({ onClose }) => {
 							}}
 						>
 							{({ values, handleSubmit, getFieldProps }) => (
-								<form onSubmit={handleSubmit} className='flex flex-col gap-5 mt-28'>
+								<form onSubmit={handleSubmit} className='flex flex-col gap-5 mt-16'>
 									<Textarea
 										{...getFieldProps(values.question)}
 										autoFocus

@@ -26,10 +26,10 @@ const OfferCard: FC<Offer> = ({
 	return (
 		<li
 			key={id}
-			className='shadow-xl shadow-black/30 h-full aspect-square hover:scale-105 duration-200 cursor-pointer'
+			className='shadow-xl shadow-black/30 h-full hover:scale-105 duration-200 cursor-pointer rounded-[30px] overflow-hidden'
 		>
 			<article className=' bg-primary-1 dark:bg-slate-900 overflow-hidden w-full h-full relative'>
-				<div className='absolute top-0 right-0'>
+				<div className='absolute top-0 right-0 w-full'>
 					<CategoryChip category={category.value} />
 				</div>
 				<div className='relative flex flex-col justify-between h-full pt-7'>
@@ -39,6 +39,7 @@ const OfferCard: FC<Offer> = ({
 								<img src={author.logoUrl} className='w-20 h-20 object-cover rounded bg-white' />
 							</div>
 							<div className='flex flex-col gap-3 text-white text-right'>
+								<small>Experiencia: {experienceMin.value}</small>
 								<small className='text-white text-xs'>Publicado el {publishedDate}</small>
 								<div className='flex self-end'>
 									<Icon name='location' className='h-5 w-5' />
@@ -68,38 +69,6 @@ const OfferCard: FC<Offer> = ({
 						</div>
 					</div>
 				</div>
-				{/* <div className='relative'>
-					<h3 className='text-sm bg-white/50 backdrop-blur-lg text-black font-bold absolute top-0 left-0 w-full text-center p-5'>
-						{author.name}
-					</h3>
-					<img src={author.logoUrl} className='w-full h-[300px] object-cover' />
-					<h2 className='absolute bottom-0 bg-cyan-900/80 text-white font-bold backdrop-blur w-full p-2 text-xl'>
-						{title}
-					</h2>
-				</div>
-				<div className='flex justify-center'>
-					<div className='flex gap-1 p-5 items-center'>
-						<Icon name='location' className='h-6 w-6 text-primary-1' />
-						<small className='text-black dark:text-white'>{province.value}</small>
-					</div>
-					<div className='flex gap-1 p-5 items-center'>
-						<Icon name='contract' className='h-6 w-6 text-primary-1' />
-						<small className='text-black dark:text-white'>{contractType.value}</small>
-					</div>
-					<div className='flex gap-1 p-5 items-center'>
-						<Icon name='remote' className='h-6 w-6 text-primary-1' />
-						<small className='text-black dark:text-white'>
-							{teleworking ? teleworking.value : 'N/A'}
-						</small>
-					</div>
-				</div>
-				<div className='p-5'>
-					<p className='text-black dark:text-white'>
-						Experiencia requerida:{' '}
-						<span className='text-primary-1 font-bold'>{experienceMin.value}</span>
-					</p>
-					<Button>Ver oferta</Button>
-				</div> */}
 			</article>
 		</li>
 	);

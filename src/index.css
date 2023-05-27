@@ -146,7 +146,7 @@ textarea::placeholder {
 }
 
 .job-category-chip {
-	@apply text-white rounded-bl-2xl p-2 px-5 border text-xs text-center min-w-[200px];
+	@apply text-white p-2 border-b-2 text-xs text-center;
 }
 /* Animations */
 

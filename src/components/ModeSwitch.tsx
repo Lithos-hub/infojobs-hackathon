@@ -21,7 +21,7 @@ const ModeSwitch: FC = () => {
 	return (
 		<>
 			<div
-				className='flex rounded-full bg-secondary-2 gap-5 bg-primary-1/80 dark:bg-primary-1/20 justify-between cursor-pointer w-[70px] h-full z-0'
+				className='flex rounded-full bg-secondary-2 gap-5 border border-black dark:bg-primary-1/20 justify-between cursor-pointer w-[70px] h-full z-0'
 				onClick={() => onToggleMode()}
 			>
 				<div className='relative h-auto w-full'>

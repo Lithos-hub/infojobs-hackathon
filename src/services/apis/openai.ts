@@ -1,5 +1,10 @@
-import { Configuration, OpenAIApi } from 'openai';
-import { jobAssistantPrompt, searchAssistantPrompt } from './utils';
+import { ChatCompletionRequestMessage, Configuration, OpenAIApi } from 'openai';
+import {
+	EXAMPLES_MESSAGES_SEARCH_ASSISTANT,
+	jobAssistantPrompt,
+	searchAssistantPrompt,
+	skillTestGeneratorPrompt,
+} from './utils';
 
 interface GPTQuery {
 	type:
@@ -18,7 +23,7 @@ const configuration = new Configuration({
 const systemPrompts = {
 	'search-assistant': searchAssistantPrompt,
 	'job-assistant': jobAssistantPrompt,
-	'generator-assistant': ``,
+	'generator-assistant': skillTestGeneratorPrompt,
 	'evaluator-assistant': ``,
 	generic: `Responderás a las preguntas que se te formulen con la mayor precisión posible.`,
 };
@@ -37,13 +42,22 @@ export const useChatGPT = async ({ type, message }: GPTQuery) => {
 
 	const userPrompt = message;
 
+	const messages =
+		type === 'search-assistant'
+			? [
+					{ role: 'system', content: systemPrompt },
+					...EXAMPLES_MESSAGES_SEARCH_ASSISTANT,
+					{ role: 'user', content: userPrompt },
+			  ]
+			: [
+					{ role: 'system', content: systemPrompt },
+					{ role: 'user', content: userPrompt },
+			  ];
+
 	try {
 		const response = await openai.createChatCompletion({
 			...options,
-			messages: [
-				{ role: 'system', content: systemPrompt },
-				{ role: 'user', content: userPrompt },
-			],
+			messages: messages as ChatCompletionRequestMessage[],
 		});
 		return response.data.choices[0].message?.content;
 	} catch (error) {

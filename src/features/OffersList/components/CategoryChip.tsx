@@ -17,7 +17,7 @@ const getCategoryColor = (category: string) => {
 			'Educación y formación': 'job-category-chip bg-teal-800 border-teal-500',
 			'Finanzas y banca': 'job-category-chip bg-yellow-500 border-yellow-500',
 			'Informática y telecomunicaciones': 'job-category-chip bg-blue-800 border-blue-500',
-			'Ingenieros y técnicos': 'job-category-chip bg-orange-500 border-orange-500',
+			'Ingenieros y técnicos': 'job-category-chip bg-orange-500 border-amber-500',
 			'Inmobiliario y construcción': 'job-category-chip bg-red-600 border-red-500',
 			Legal: 'job-category-chip bg-gray-800 border-gray-500',
 			'Marketing y comunicación': 'job-category-chip bg-pink-800 border-pink-500',

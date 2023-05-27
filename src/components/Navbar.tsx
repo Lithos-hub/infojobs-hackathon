@@ -6,8 +6,8 @@ import { useAppSelector } from '@/hooks';
 const Navbar: FC = () => {
 	const isUsingDarkMode = useAppSelector(state => state.ui.darkMode);
 	return (
-		<header className='absolute top-0 w-full z-50'>
-			<nav className='p-5 w-full flex justify-between h-20'>
+		<header className='absolute top-0 left-1/2 -translate-x-1/2 w-[95vw] md:w-[75vw] z-50'>
+			<nav className='py-5 w-full flex justify-between h-20'>
 				<div className='flex gap-10 items-center'>
 					<Link to='/'>
 						<img
@@ -17,12 +17,6 @@ const Navbar: FC = () => {
 							height='auto'
 							className='object-cover'
 						/>
-					</Link>
-					<Link to='/generator'>
-						<span className='hidden md:block text-sm text-primary-1'>Generador de tests</span>
-					</Link>
-					<Link to='/evaluator'>
-						<span className='hidden md:block text-sm text-primary-1'>Evaluador de tests</span>
 					</Link>
 				</div>
 				{/* <Icon name='avatar' className='h-10 w-10 hidden md:block bg-white/20 rounded-full p-2' /> */}
@@ -38,9 +32,9 @@ const Navbar: FC = () => {
 						id='hamburguer-menu'
 						className='h-[25px] w-[25px] flex flex-col gap-2 md:hidden cursor-pointer'
 					>
-						<div className='bg-white w-full h-[1px]'></div>
-						<div className='bg-white w-full h-[1px]'></div>
-						<div className='bg-white w-full h-[1px]'></div>
+						<div className='bg-black dark:bg-white w-full h-[1px]'></div>
+						<div className='bg-black dark:bg-white w-full h-[1px]'></div>
+						<div className='bg-black dark:bg-white w-full h-[1px]'></div>
 					</div>
 				</div>
 			</nav>
