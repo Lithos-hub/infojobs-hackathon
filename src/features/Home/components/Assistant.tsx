@@ -1,25 +1,15 @@
-import { FC, useEffect, useRef, useState } from 'react';
+import { FC, useRef, useState } from 'react';
 
 import { Formik } from 'formik';
 import { motion } from 'framer-motion';
 
 import { useChatGPT } from '@/services/apis';
 
-import { Button, Icon, Loader, Overlay, Textarea } from '@/components';
+import { Button, Icon, Loader, Overlay, ResponseWrapper, Textarea } from '@/components';
 
 interface Props {
 	onClose: () => void;
 }
-
-const ResponseWrapper = ({ html }: { html: string }) => {
-	const ref = useRef<HTMLDivElement>(null);
-
-	useEffect(() => {
-		if (ref.current) ref.current.innerHTML = html;
-	});
-
-	return <div ref={ref} className='gpt-response p-10' />;
-};
 
 const Assistant: FC<Props> = ({ onClose }) => {
 	const wrapperRef = useRef<HTMLDivElement>(null);
@@ -56,7 +46,6 @@ const Assistant: FC<Props> = ({ onClose }) => {
 				animate={{
 					opacity: 1,
 					top: '50%',
-					type: 'spring',
 				}}
 				transition={{
 					duration: 0.5,

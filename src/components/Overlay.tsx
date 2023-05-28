@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { motion } from 'framer-motion';
 
 interface Props {
-	onClose: () => void;
+	onClose?: () => void;
 }
 
 const Overlay: FC<Props> = ({ onClose }) => {

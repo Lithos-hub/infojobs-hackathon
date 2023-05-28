@@ -4,6 +4,9 @@ import {
 	jobAssistantPrompt,
 	searchAssistantPrompt,
 	skillTestGeneratorPrompt,
+	evaluatorAssistantPrompt,
+	EXAMPLES_MESSAGES_GENERATOR_ASSISTANT,
+	EXAMPLES_MESSAGES_EVALUATOR_ASSISTANT,
 } from './utils';
 
 interface GPTQuery {
@@ -24,7 +27,7 @@ const systemPrompts = {
 	'search-assistant': searchAssistantPrompt,
 	'job-assistant': jobAssistantPrompt,
 	'generator-assistant': skillTestGeneratorPrompt,
-	'evaluator-assistant': ``,
+	'evaluator-assistant': evaluatorAssistantPrompt,
 	generic: `Responderás a las preguntas que se te formulen con la mayor precisión posible.`,
 };
 
@@ -42,17 +45,37 @@ export const useChatGPT = async ({ type, message }: GPTQuery) => {
 
 	const userPrompt = message;
 
-	const messages =
-		type === 'search-assistant'
-			? [
-					{ role: 'system', content: systemPrompt },
-					...EXAMPLES_MESSAGES_SEARCH_ASSISTANT,
-					{ role: 'user', content: userPrompt },
-			  ]
-			: [
-					{ role: 'system', content: systemPrompt },
-					{ role: 'user', content: userPrompt },
-			  ];
+	let messages = [];
+
+	switch (type) {
+		case 'search-assistant':
+			messages = [
+				{ role: 'system', content: systemPrompt },
+				...EXAMPLES_MESSAGES_SEARCH_ASSISTANT,
+				{ role: 'user', content: userPrompt },
+			];
+			break;
+		case 'generator-assistant':
+			messages = [
+				{ role: 'system', content: systemPrompt },
+				...EXAMPLES_MESSAGES_GENERATOR_ASSISTANT,
+				{ role: 'user', content: userPrompt },
+			];
+			break;
+		case 'evaluator-assistant':
+			messages = [
+				{ role: 'system', content: systemPrompt },
+				...EXAMPLES_MESSAGES_EVALUATOR_ASSISTANT,
+				{ role: 'user', content: userPrompt },
+			];
+			break;
+		default:
+			messages = [
+				{ role: 'system', content: systemPrompt },
+				{ role: 'user', content: userPrompt },
+			];
+			break;
+	}
 
 	try {
 		const response = await openai.createChatCompletion({

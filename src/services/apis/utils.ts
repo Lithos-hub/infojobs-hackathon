@@ -157,23 +157,14 @@ export const skillTestGeneratorPrompt = `
 	Se te proporcionará los conocimientos necesarios que se piden para esa oferta además de una descripción del puesto de trabajo. Con esa información, deberás generar las preguntas.
 
 	Cada pregunta comenzará con un asterisco. Solo devolverás la lista de preguntas. 
-	
-	Por ejemplo, si la oferta es de programador front-end con Vue o React, estas podrías ser algunas de las preguntas:
+`;
 
-	* ¿Qué es el DOM y el virtual DOM?
-	* ¿Cuál es el ciclo de vida de un componente de Vue?
-	* ¿Cómo describirías la metodología SCRUM?
-	* ¿Qué es un hook?
-	* ¿Qué es un componente?
-	* ¿Qué es un estado?
-	* ¿Qué es una prop?
-	* En Vue es posible la comunicación entre componentes padre e hijo ¿Cómo se realiza?
-	* No es posible desplegar una aplicación de Vue sin dockerizarla ¿Verdadero o falso?
-	* En HTML, la etiqueta <div> es recomendada en la mayoría de los casos porque ahorra potencia de cómputo, ¿Verdadero o falso?
-	* En CSS no es posible usar capas, ¿Verdadero o falso?
-	* En JavaScript, es obligatorio el uso de puntos y comas al final de cada línea, ¿Verdadero o falso?
-	* En React, los componentes solo se vuelven a renderizar cuando cambia su estado, ¿Verdadero o falso?
-	* En Vue 3 si usamos script setup debemos retornar siempre algo, ¿Verdadero o falso?
+export const evaluatorAssistantPrompt = `
+	Eres una IA encargada de evaluar las respuestas de un cuestionario de aptitudes sobre una oferta de empleo. Para ello, deberás evaluar las respuestas de un candidato y darle una puntuación en base a las respuestas que haya dado. La puntuación será un número entre 0 y 10 y la evaluación consistirá en un texto donde se explique por qué se le ha dado esa puntuación, y cuáles son las fortalezas y debilidades del candidato. Deberás aconsejar en qué puntos debe mejorar para poder afrontar la oferta de empleo con éxito.
+
+	Se te proporcionará la lista de preguntas y respuestas. Con esa información, deberás evaluar las respuestas.
+
+	La respuesta deberá ser en formato HTML, separando los párrafos con etiquetas <p></p>, las listas con etiquetas <ul><li></li></ul>, las palabras reslatdas con <strong></strong> y los textos más grandes con <h3></h3>
 `;
 
 export const EXAMPLES_MESSAGES_SEARCH_ASSISTANT = [
@@ -228,5 +219,122 @@ export const EXAMPLES_MESSAGES_SEARCH_ASSISTANT = [
 		role: 'assistant',
 		content:
 			'q=desarrollador%20web&province=huelva&province=sevilla&province=cadiz&province=cordoba&province=jaen&province=malaga&province=granada&province=almeria',
+	},
+];
+
+export const EXAMPLES_MESSAGES_GENERATOR_ASSISTANT = [
+	{
+		role: 'user',
+		content: `
+		Descripción de la oferta: En Métrica Consulting nos encontramos en búsqueda de Desarrollador Front End Javascript con experiencia en frameworks JS (Reactjs, Angularjs,Vue) y Node Js
+
+		Necesario:
+		
+		Desarrollador Front JavaScript.
+		
+		Experiencia con HTML5 y CSS3
+		
+		Experiencia en desarrollo Responsive/Progresive Design.
+		
+		Experiencia de frameworks de JavaScript (VueJS, AngularJS y/o React). NodeJS
+		
+		Experiencia en diseño, desarrollo e implementación de APIs y servicios REST.
+		
+		Experiencia con control de versiones Git.
+		
+		Experiencia trabajando con metodologías Agile, Scrum, DevOps.
+		
+		Conocimientos de arquitectura DDD, MDA, SOA y patrones de diseño.
+		
+		Conocimientos de testing y debugging
+		
+		Residencia en Salamanca
+		
+		¿Qué te ofrecemos?
+		
+		- Contratación indefinida.
+		
+		- Formación continua
+		
+		Si estás buscando un proyecto nuevo, y posees la experiencia requerida , inscríbete en la oferta. ¡¡¡Te estamos esperando!!
+
+		Conocimientos necesarios: 
+		JavaScript
+		AngularJS
+		Agile
+		HTML5
+		Testing
+		Git
+		CSS3
+		REST
+		Patrones de diseño
+		`,
+	},
+	{
+		role: 'assistant',
+		content: `* ¿Qué es el DOM y el virtual DOM?
+		* ¿Cuál es el ciclo de vida de un componente de Vue?
+		* ¿Cómo describirías la metodología SCRUM?
+		* ¿Qué es un hook?
+		* ¿Cuántas formas conoces de consumir una API REST? ¿Cuáles son las peticiones HTTP que conoces?
+		* ¿Qué es un estado?
+		* ¿Qué diferencia hay entre un test unitario y un test de integración? Nombra también alguna librería de testing para el lado del cliente.
+		* En Vue es posible la comunicación entre componentes padre e hijo ¿Cómo se realiza?
+		* No es posible desplegar una aplicación de Vue sin dockerizarla ¿Verdadero o falso?
+		* En HTML, la etiqueta <div> es recomendada en la mayoría de los casos porque ahorra potencia de cómputo, ¿Verdadero o falso?
+		* En CSS no es posible usar capas, ¿Verdadero o falso?
+		* En JavaScript, es obligatorio el uso de puntos y comas al final de cada línea, ¿Verdadero o falso?
+		* En Git, ¿cuál es la diferencia entre git fetch y git pull?
+		* En Vue 3 si usamos script setup debemos retornar siempre algo, ¿Verdadero o falso?`,
+	},
+];
+
+export const EXAMPLES_MESSAGES_EVALUATOR_ASSISTANT = [
+	{
+		role: 'user',
+		content: `
+			Pregunta: ¿Tienes experiencia en el desarrollo de aplicaciones web con Vue.js?
+			Respuesta: Sí, tengo experiencia de 2 años en el desarrollo de aplicaciones web con Vue.js
+
+			Pregunta: ¿Qué es Vue.js y cómo se diferencia de otros frameworks de JavaScript?
+			Respuesta: Vue.js es un framework de JavaScript que se diferencia de otros frameworks como React o Angular en que es más sencillo de aprender y de usar. Además, es más ligero y rápido que otros frameworks.
+
+			Pregunta: ¿Qué es el patrón de diseño MVC y cómo se aplica en Vue.js?
+			Respuesta: El patrón de diseño MVC es un patrón de diseño que separa la lógica de negocio de la interfaz de usuario. En Vue.js se aplica de la siguiente manera: el modelo es el estado de la aplicación, la vista es la interfaz de usuario y el controlador es el componente.
+
+			Pregunta: ¿Qué es Vuex y para qué se utiliza en una aplicación de Vue.js?
+			Respuesta: Vuex es una librería que sirve para cargar componentes en el lado del servidor.
+
+			Pregunta: ¿Qué es la directiva v-bind en Vue.js y cómo se utiliza?
+			Respuesta: Se utiliza para recorrer un array de objetos y mostrarlos en la interfaz de usuario.
+
+			Pregunta: ¿Qué es la directiva v-model en Vue.js y cómo se utiliza?
+			Respuesta: Se utiliza para estilizar un componente con CSS desde el propio template.
+
+			Pregunta: ¿Cuál es la diferencia entre una instancia de Vue.js y un componente de Vue.js?
+			Respuesta: Una instancia de Vue.js es un objeto que contiene el estado de la aplicación y un componente de Vue.js es un objeto que contiene la lógica de negocio de la aplicación.
+
+			Pregunta: ¿Qué es la directiva v-for en Vue.js y cómo se utiliza?
+			Respuesta: Se utiliza para recorrer un array de objetos y mostrarlos en la interfaz de usuario.
+
+			Pregunta: ¿Qué es la directiva v-if en Vue.js y cómo se utiliza?
+			Respuesta: Se utiliza para mostrar un componente en la interfaz de usuario una vez se ha cargado el componente.
+
+			Pregunta: ¿Qué es la directiva v-else en Vue.js y cómo se utiliza?
+			Respuesta: Se utiliza para descartar un componente en caso de que falle su carga
+		`,
+	},
+	{
+		role: 'assistant',
+		content: `
+			<h3 className="text-3xl>La puntuación ha sido de <span className="text-red-500">4</span> sobre 10</h3>
+
+			<p>Lo sentimos, creemos que no posees los conocimientos necesarios para afrontar correctamente una oferta de empleo de este tipo. Estos son algunas de las cosas que pensamos que deberías de mejorar: </p>
+
+			<ul>
+				<li>Conocer mejor la arquitectura de Vue.js</li>
+				<li>Repasar la sintaxis propia de Vue.js y sus directivas</li>
+			</ul>
+		`,
 	},
 ];

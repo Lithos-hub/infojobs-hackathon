@@ -130,7 +130,7 @@ textarea::placeholder {
 }
 
 .gpt-response {
-	@apply text-white;
+	@apply dark:text-white;
 }
 
 .gpt-response ul {
