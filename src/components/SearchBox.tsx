@@ -14,12 +14,16 @@ import Button from './Button';
 import AudioRecorder from '@/features/Home/components/AudioRecorder';
 import { useChatGPT } from '@/services/apis';
 
+import * as Yup from 'yup';
+
 interface Props extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
 	label?: string;
 }
 
 const SearchBox: FC<Props> = ({ ...rest }) => {
 	const navigate = useNavigate();
+	const [isFinished, setIsFinished] = useState(false);
+	const [isError, setIsError] = useState(false);
 
 	const { speaking, recording, transcript, startRecording, stopRecording } = useWhisper({
 		apiKey: import.meta.env.VITE_OPENAI_API_KEY,
@@ -30,9 +34,6 @@ const SearchBox: FC<Props> = ({ ...rest }) => {
 		},
 		removeSilence: true,
 	});
-
-	const [isFinished, setIsFinished] = useState(false);
-	const [isError, setIsError] = useState(false);
 
 	const loadingMessages = [
 		'Buscando las ofertas que mejor encajen con tu descripción... 🕵️',
@@ -50,6 +51,10 @@ const SearchBox: FC<Props> = ({ ...rest }) => {
 
 	let debounce: TimeoutId;
 
+	const validationSchema = Yup.object().shape({
+		searchQuery: Yup.string().required('No has introducido ningún criterio de búsqueda'),
+	});
+
 	useEffect(() => {
 		if (recording && !speaking) {
 			clearTimeout(debounce);
@@ -65,6 +70,7 @@ const SearchBox: FC<Props> = ({ ...rest }) => {
 				initialValues={{
 					searchQuery: '',
 				}}
+				validationSchema={validationSchema}
 				onSubmit={async values => {
 					const response = (await useChatGPT({
 						type: 'search-assistant',
@@ -75,14 +81,13 @@ const SearchBox: FC<Props> = ({ ...rest }) => {
 					setIsFinished(true);
 				}}
 			>
-				{({ values, handleSubmit, getFieldProps, isSubmitting }) => (
+				{({ values, handleSubmit, errors, getFieldProps, isSubmitting }) => (
 					<form onSubmit={handleSubmit} className='text-center'>
 						{!isFinished && !isSubmitting ? (
 							<>
 								<Textarea
 									{...rest}
 									{...getFieldProps(values.searchQuery)}
-									autoFocus
 									name='searchQuery'
 									value={values.searchQuery || transcript.text}
 								/>
@@ -95,6 +100,7 @@ const SearchBox: FC<Props> = ({ ...rest }) => {
 										/>
 									</button>
 								</div>
+								<small className='text-red-500'>{errors.searchQuery}</small>
 							</>
 						) : isFinished && !isSubmitting && !isError ? (
 							<section className='text-center flex flex-col gap-5'>

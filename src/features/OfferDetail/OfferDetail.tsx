@@ -67,7 +67,7 @@ const OfferDetailsPage = () => {
 			</div>
 		</>
 	) : offer ? (
-		<section className='py-[10vh] w-[95vw] md:max-w-[75vw] mx-auto'>
+		<section className='py-[10vh]'>
 			<Button onClick={() => window.history.back()} className='cursor-pointer flex items-center'>
 				Regresar
 			</Button>

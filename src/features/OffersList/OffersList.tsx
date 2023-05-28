@@ -24,7 +24,7 @@ const OffersListPage = () => {
 			<h1 className='text-2xl text-primary-1 dark:text-white font-bold text-center'>
 				Resultado de la búsqueda:
 			</h1>
-			<div className='p-10 rounded-[30px]'>
+			<div className='py-10 rounded-[30px]'>
 				<ul className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5'>
 					{data ? (
 						data.map((offer: Offer) => {
