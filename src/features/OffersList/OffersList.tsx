@@ -27,9 +27,9 @@ const OffersListPage = () => {
 			<div className='py-10 rounded-[30px]'>
 				<ul className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5'>
 					{data ? (
-						data.map((offer: Offer) => {
+						data.map((offer: Offer, i) => {
 							return (
-								<Link key={offer.id} to={`/offer/${offer.id}`}>
+								<Link key={i} to={`/offer/${offer.id}`}>
 									<OfferCard {...offer} />
 								</Link>
 							);
