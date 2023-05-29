@@ -1,4 +1,6 @@
 [[redirects]]
   from = "/*"
   to = "/index.html"
+  src = "/api/*"
+  dest = "/api/:splat"
   status = 200

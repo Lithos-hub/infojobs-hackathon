@@ -9,7 +9,9 @@ import { useInfiniteScroll } from '@/hooks';
 
 const OffersListPage = () => {
 	const { search } = useLocation();
-	const { data, isLoading } = useInfiniteScroll(`https://api.infojobs.net/api/9/offer${search}`);
+	const { data, isLoading } = useInfiniteScroll(
+		`https://api.infojobs.net/api/api/9/offer${search}`
+	);
 
 	return (
 		<section className='pt-[10vh]'>
