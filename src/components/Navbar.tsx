@@ -2,6 +2,7 @@ import { FC } from 'react';
 import { Link } from 'react-router-dom';
 import ModeSwitch from './ModeSwitch';
 import { useAppSelector } from '@/hooks';
+import Icon from './Icon';
 
 const Navbar: FC = () => {
 	const isUsingDarkMode = useAppSelector(state => state.ui.darkMode);
@@ -19,9 +20,11 @@ const Navbar: FC = () => {
 						/>
 					</Link>
 				</div>
-				{/* <Icon name='avatar' className='h-10 w-10 hidden md:block bg-white/20 rounded-full p-2' /> */}
-				<div className='flex gap-5 items-center'>
-					<ModeSwitch />
+				<div className='flex gap-5'>
+					<div className='flex gap-5 items-center'>
+						<ModeSwitch />
+					</div>
+					<Icon name='github' className='w-8 h-8 my-auto text-black dark:text-cyan-500' />
 				</div>
 			</nav>
 		</header>
