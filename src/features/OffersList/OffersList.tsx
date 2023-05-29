@@ -9,7 +9,7 @@ import { useInfiniteScroll } from '@/hooks';
 
 const OffersListPage = () => {
 	const { search } = useLocation();
-	const { data, isLoading } = useInfiniteScroll(`/api/api/9/offer${search}`);
+	const { data, isLoading } = useInfiniteScroll(`https://api.infojobs.net/api/9/offer${search}`);
 
 	return (
 		<section className='pt-[10vh]'>
@@ -26,10 +26,10 @@ const OffersListPage = () => {
 			</h1>
 			<div className='py-10 rounded-[30px]'>
 				<ul className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5'>
-					{data ? (
+					{data && data.length > 0 ? (
 						data.map((offer: Offer, i) => {
 							return (
-								<Link key={i} to={`/offer/${offer.id}`}>
+								<Link key={i} to={`https://api.infojobs.net/api/7/offer/${offer.id}`}>
 									<OfferCard {...offer} />
 								</Link>
 							);

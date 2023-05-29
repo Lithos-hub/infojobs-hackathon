@@ -29,7 +29,7 @@ const Navbar: FC = () => {
 						target='_blank'
 						className='hover:scale-125 duration-200'
 					>
-						<Icon name='github' className='w-8 h-8 my-auto text-black dark:text-cyan-500' />
+						<Icon name='github' className='w-8 h-8 mt-1 text-black dark:text-cyan-500' />
 					</a>
 				</div>
 			</nav>
