@@ -68,8 +68,8 @@ const SearchBox: FC<Props> = ({ ...rest }) => {
 
 		// Debounce to set the message and submit the form after 5 seconds of not speaking
 		if (recording && !speaking) {
-			debounce = setTimeout(() => {
-				stopRecording();
+			debounce = setTimeout(async () => {
+				await stopRecording();
 				formikRef.current?.setFieldValue('searchQuery', transcript.text);
 				onDispatchSubmit();
 			}, 5000);
