@@ -55,8 +55,7 @@ const SearchBox: FC<Props> = ({ ...rest }) => {
 		setIsError(false);
 	};
 
-	const onDispatchSubmit = () =>
-		formRef.current?.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+	const onDispatchSubmit = () => formRef.current?.dispatchEvent(new Event('submit'));
 
 	const toggleRecording = () => (recording ? stopRecording() : startRecording());
 
@@ -89,6 +88,7 @@ const SearchBox: FC<Props> = ({ ...rest }) => {
 				}}
 				validationSchema={validationSchema}
 				onSubmit={async values => {
+					console.log('Submitting...');
 					const response = (await useChatGPT({
 						type: 'search-assistant',
 						message: values.searchQuery,
@@ -120,10 +120,14 @@ const SearchBox: FC<Props> = ({ ...rest }) => {
 								<div className='flex flex-col gap-2'>
 									<small className='text-red-500'>{errors.searchQuery}</small>
 									{(transcript.text && transcript.text.length > 0) || recording ? (
-										<small className='text-primary-1 text-xs'>
-											* Cuando termines de hablar, espera unos segundos para que podamos procesar tu
-											voz correctamente y enviar la solicitud de búsqueda. Si lo deseas puedes
-											finalizar manualmente la grabación pulsando en el micrófono de nuevo.
+										<small className='text-black dark:text-cyan-500 font-semibold text-xs text-center mx-20'>
+											* Cuando termines de hablar, <strong>espera unos segundos</strong> para que
+											podamos procesar tu voz correctamente y enviar la solicitud de búsqueda. Si lo
+											deseas{' '}
+											<strong>
+												puedes finalizar manualmente la grabación pulsando en el micrófono de nuevo
+												y buscar pulsando en la lupa.
+											</strong>
 										</small>
 									) : null}
 								</div>

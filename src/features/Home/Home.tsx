@@ -24,7 +24,7 @@ const Home = () => {
 				<div className='z-50 w-full'>
 					<SearchBox
 						className='w-full text-primary-1 font-bold bg-white/10 dark:text-white dark:bg-primary-1/10 backdrop-blur pr-[120px] text-justify'
-						placeholder={`Describe tu perfil profesional, experiencia, formación, tipo de empleo en el que estás interesado, etc. \n\nPor ejemplo: "Busco trabajo de electricista en Madrid, cuento con 4 años de experiencia en mantenimiento e instalaciones y fui oficial electricista de media/alta tensión durante 2 años, tengo coche propio."`}
+						placeholder={`Descríbete profesionalmente y el tipo de empleo en el que estás interesado. \n\nPor ejemplo: "Busco trabajo de electricista en Madrid, cuento con 4 años de experiencia en mantenimiento e instalaciones y fui oficial electricista de media/alta tensión durante 2 años, tengo coche propio."`}
 					/>
 				</div>
 				{!isAsking ? (
