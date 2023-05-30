@@ -15,13 +15,13 @@ import AudioRecorder from '@/features/Home/components/AudioRecorder';
 import { useChatGPT } from '@/services/apis';
 
 import * as Yup from 'yup';
-import { useEffectAsync } from '@chengsokdara/react-hooks-async';
 
 interface Props extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
 	label?: string;
 }
 
 const SearchBox: FC<Props> = ({ ...rest }) => {
+	const submitButtonRef = useRef<HTMLButtonElement>(null);
 	const formikRef = useRef<
 		FormikProps<{
 			searchQuery: string;
@@ -44,6 +44,20 @@ const SearchBox: FC<Props> = ({ ...rest }) => {
 		removeSilence: true,
 	});
 
+	let debounce: TimeoutId;
+
+	useEffect(() => {
+		// Debounce to set the message and submit the form after 5 seconds of not speaking
+		if (recording && !speaking) {
+			debounce = setTimeout(() => {
+				stopRecording();
+				formikRef?.current?.setSubmitting(true);
+				getOffersByUserDescription(transcript.text as string);
+			}, 5000);
+		}
+		return () => clearTimeout(debounce);
+	}, [speaking, recording]);
+
 	const loadingMessages = [
 		'Buscando las ofertas que mejor encajen con tu descripción... 🕵️',
 		'Generando resultados... 📝',
@@ -56,31 +70,27 @@ const SearchBox: FC<Props> = ({ ...rest }) => {
 		setIsError(false);
 	};
 
-	const onDispatchSubmit = () => formRef.current?.dispatchEvent(new Event('submit'));
+	const getOffersByUserDescription = async (description: string) => {
+		const response = (await useChatGPT({
+			type: 'search-assistant',
+			message: description,
+		})) as string;
+
+		navigate(`/offers?${response}`);
+		setIsFinished(true);
+		formikRef?.current?.setSubmitting(false);
+	};
+
+	const onSubmit = async ({ searchQuery }: Record<string, string>) => {
+		if (recording) stopRecording();
+		getOffersByUserDescription(searchQuery);
+	};
 
 	const toggleRecording = () => (recording ? stopRecording() : startRecording());
 
 	const validationSchema = Yup.object().shape({
 		searchQuery: Yup.string().required('No has introducido ningún criterio de búsqueda'),
 	});
-
-	useEffect(() => {
-		const onStopRecording = async () => {
-			await stopRecording();
-			formikRef.current?.setFieldValue('searchQuery', transcript.text);
-			onDispatchSubmit();
-		};
-		let debounce: TimeoutId;
-
-		// Debounce to set the message and submit the form after 5 seconds of not speaking
-		if (recording && !speaking) {
-			debounce = setTimeout(() => {
-				onStopRecording().catch(error => console.log('Error while stopping recording', error));
-			}, 5000);
-		}
-
-		return () => clearTimeout(debounce);
-	}, [speaking, transcript.text]);
 
 	return (
 		<div className='relative'>
@@ -91,16 +101,7 @@ const SearchBox: FC<Props> = ({ ...rest }) => {
 					searchQuery: '',
 				}}
 				validationSchema={validationSchema}
-				onSubmit={async values => {
-					console.log('Submitting...');
-					const response = (await useChatGPT({
-						type: 'search-assistant',
-						message: values.searchQuery,
-					})) as string;
-
-					navigate(`/offers?${response}`);
-					setIsFinished(true);
-				}}
+				onSubmit={async values => await onSubmit(values)}
 			>
 				{({ values, handleSubmit, errors, getFieldProps, isSubmitting }) => (
 					<form ref={formRef} onSubmit={handleSubmit} className='text-center'>
@@ -114,7 +115,7 @@ const SearchBox: FC<Props> = ({ ...rest }) => {
 								/>
 								<div className='flex items-center gap-5 absolute top-5 right-5'>
 									<AudioRecorder recording={recording} onClick={() => toggleRecording()} />
-									<button type='submit'>
+									<button ref={submitButtonRef} type='submit'>
 										<Icon
 											name='magnify'
 											className='h-10 w-10 cursor-pointer text-black dark:text-white'
