@@ -1,8 +1,8 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { useWhisper } from '@chengsokdara/use-whisper';
-import { Formik } from 'formik';
+import { Formik, FormikProps } from 'formik';
 
 import { TimeoutId } from '@reduxjs/toolkit/dist/query/core/buildMiddleware/types';
 
@@ -21,7 +21,15 @@ interface Props extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
 }
 
 const SearchBox: FC<Props> = ({ ...rest }) => {
+	const formikRef = useRef<
+		FormikProps<{
+			searchQuery: string;
+		}>
+	>(null);
+	const formRef = useRef<HTMLFormElement>(null);
+
 	const navigate = useNavigate();
+
 	const [isFinished, setIsFinished] = useState(false);
 	const [isError, setIsError] = useState(false);
 
@@ -47,26 +55,35 @@ const SearchBox: FC<Props> = ({ ...rest }) => {
 		setIsError(false);
 	};
 
-	const toggleRecording = () => (recording ? stopRecording() : startRecording());
+	const onDispatchSubmit = () =>
+		formRef.current?.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
 
-	let debounce: TimeoutId;
+	const toggleRecording = () => (recording ? stopRecording() : startRecording());
 
 	const validationSchema = Yup.object().shape({
 		searchQuery: Yup.string().required('No has introducido ningún criterio de búsqueda'),
 	});
 
 	useEffect(() => {
+		let debounce: TimeoutId;
+
+		// Debounce to set the message and submit the form after 5 seconds of not speaking
 		if (recording && !speaking) {
-			clearTimeout(debounce);
 			debounce = setTimeout(() => {
 				stopRecording();
-			}, 7000);
+				formikRef.current?.setFieldValue('searchQuery', transcript.text);
+				onDispatchSubmit();
+			}, 5000);
 		}
-	}, [speaking]);
+
+		return () => clearTimeout(debounce);
+	}, [speaking, transcript.text]);
 
 	return (
 		<div className='relative'>
 			<Formik
+				innerRef={formikRef}
+				enableReinitialize={true}
 				initialValues={{
 					searchQuery: '',
 				}}
@@ -74,7 +91,7 @@ const SearchBox: FC<Props> = ({ ...rest }) => {
 				onSubmit={async values => {
 					const response = (await useChatGPT({
 						type: 'search-assistant',
-						message: values.searchQuery || (transcript.text as string),
+						message: values.searchQuery,
 					})) as string;
 
 					navigate(`/offers?${response}`);
@@ -82,7 +99,7 @@ const SearchBox: FC<Props> = ({ ...rest }) => {
 				}}
 			>
 				{({ values, handleSubmit, errors, getFieldProps, isSubmitting }) => (
-					<form onSubmit={handleSubmit} className='text-center'>
+					<form ref={formRef} onSubmit={handleSubmit} className='text-center'>
 						{!isFinished && !isSubmitting ? (
 							<>
 								<Textarea
@@ -100,7 +117,16 @@ const SearchBox: FC<Props> = ({ ...rest }) => {
 										/>
 									</button>
 								</div>
-								<small className='text-red-500'>{errors.searchQuery}</small>
+								<div className='flex flex-col gap-2'>
+									<small className='text-red-500'>{errors.searchQuery}</small>
+									{(transcript.text && transcript.text.length > 0) || recording ? (
+										<small className='text-primary-1 text-xs'>
+											* Cuando termines de hablar, espera unos segundos para que podamos procesar tu
+											voz correctamente y enviar la solicitud de búsqueda. Si lo deseas puedes
+											finalizar manualmente la grabación pulsando en el micrófono de nuevo.
+										</small>
+									) : null}
+								</div>
 							</>
 						) : isFinished && !isSubmitting && !isError ? (
 							<section className='text-center flex flex-col gap-5'>
