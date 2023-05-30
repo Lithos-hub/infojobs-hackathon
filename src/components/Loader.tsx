@@ -37,9 +37,9 @@ const Loader: FC<Props> = ({ messages, loaderType, size, displayRobot = false })
 
 	return (
 		<div className='flex flex-col justify-center items-center gap-10 h-full'>
-			<span className={`loader-${loaderType} text-primary-1 dark:text-cyan-500`} />
+			<span className={`loader-${loaderType}`} />
 			{displayRobot && <img src='/img/assistant-robot.png' className='h-[250px]' />}
-			<p className={`text-black dark:text-white ${textSize}`}>{loadingMessage}</p>
+			<p className={`text-primary-1 500 ${textSize}`}>{loadingMessage}</p>
 		</div>
 	);
 };

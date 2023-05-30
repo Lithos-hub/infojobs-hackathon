@@ -14,7 +14,7 @@ const Overlay: FC<Props> = ({ onClose }) => {
 			animate={{
 				opacity: 1,
 			}}
-			className='fixed top-0 left-0 h-screen w-screen bg-black/50 backdrop-blur z-50'
+			className='fixed top-0 left-0 h-screen w-screen dark:bg-slate-900/30 bg-black/10 backdrop-blur z-50'
 			onClick={onClose}
 		/>
 	);

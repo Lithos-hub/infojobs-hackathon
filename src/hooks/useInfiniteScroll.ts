@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { Offer } from '@/models';
+import { getOffers } from '@/services/apis';
 
-export const useInfiniteScroll = (url: string) => {
+export const useInfiniteScroll = (params: string) => {
 	const [data, setData] = useState<Offer[]>([]);
 	const [page, setPage] = useState(1);
 	const [isLoading, setIsLoading] = useState(false);
@@ -23,18 +24,13 @@ export const useInfiniteScroll = (url: string) => {
 	const fetchData = async () => {
 		setIsLoading(true);
 		try {
-			const { data } = await axios.get(`${url}&page=${page}`, {
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: `Basic ${import.meta.env.VITE_FULL_SECRET}`,
-				},
-			});
-			const newData = data.offers;
-			setData(prevData => [...prevData, ...newData]);
+			const { data } = (await getOffers(`${params}&page=${page}`)) as AxiosResponse<Offer[]>;
+			setData(prevData => [...prevData, ...data]);
 			setPage(prevPage => prevPage + 1);
-			setIsLoading(false);
 		} catch (error) {
 			console.log('Error fetching data:', error);
+			setIsLoading(false);
+		} finally {
 			setIsLoading(false);
 		}
 	};

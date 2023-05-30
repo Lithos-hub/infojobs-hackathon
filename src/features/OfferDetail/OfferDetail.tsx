@@ -7,6 +7,7 @@ import { useEffectAsync } from '@chengsokdara/react-hooks-async';
 import { Button, Icon, Loader, Overlay } from '@/components';
 
 import { SkillsTest } from './components';
+import { AxiosResponse } from 'axios';
 
 const OfferDetailsPage = () => {
 	const { id } = useParams<{ id: string }>();
@@ -48,8 +49,8 @@ const OfferDetailsPage = () => {
 	useEffectAsync(async () => {
 		setLoadingOffer(true);
 		try {
-			const res = await getOffer(id as string);
-			if (res) setOffer(res.data);
+			const { data } = (await getOffer(id as string)) as AxiosResponse<OfferDetail>;
+			if (data) setOffer(data);
 		} catch (error) {
 			console.log(error);
 		} finally {
