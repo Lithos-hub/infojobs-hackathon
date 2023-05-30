@@ -15,6 +15,7 @@ import AudioRecorder from '@/features/Home/components/AudioRecorder';
 import { useChatGPT } from '@/services/apis';
 
 import * as Yup from 'yup';
+import { useEffectAsync } from '@chengsokdara/react-hooks-async';
 
 interface Props extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
 	label?: string;
@@ -64,14 +65,17 @@ const SearchBox: FC<Props> = ({ ...rest }) => {
 	});
 
 	useEffect(() => {
+		const onStopRecording = async () => {
+			await stopRecording();
+			formikRef.current?.setFieldValue('searchQuery', transcript.text);
+			onDispatchSubmit();
+		};
 		let debounce: TimeoutId;
 
 		// Debounce to set the message and submit the form after 5 seconds of not speaking
 		if (recording && !speaking) {
-			debounce = setTimeout(async () => {
-				await stopRecording();
-				formikRef.current?.setFieldValue('searchQuery', transcript.text);
-				onDispatchSubmit();
+			debounce = setTimeout(() => {
+				onStopRecording().catch(error => console.log('Error while stopping recording', error));
 			}, 5000);
 		}
 
