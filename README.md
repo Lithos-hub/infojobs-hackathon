@@ -39,8 +39,6 @@ npm run preview
 You need to create a `.env.local` file in the root of the project with the following variables:
 
 ```
-VITE_OPENAI_API_KEY= // OpenAI API key
-VITE_CLIENT_ID= // InfoJobs Developer API client ID
-VITE_CLIENT_SECRET= // InfoJobs Developer API client secret
-VITE_FULL_SECRET= // InfoJobs Developer API full secret (read the guide)
+VITE_OPENAI_API_KEY=Your api key
+VITE_BASE_URL=https://infojobs-hackathon-backend-production.up.railway.app/api/v1/infojobs // Backend proxy to avoid CORS issues
 ```
