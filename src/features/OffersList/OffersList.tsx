@@ -1,6 +1,4 @@
-// import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
-// import { getOffers } from '@/services/apis';
 import { Offer } from '@/models';
 import { OfferCard } from './components';
 import { Button, Loader, Overlay } from '@/components';

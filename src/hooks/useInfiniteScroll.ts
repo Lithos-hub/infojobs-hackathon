@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios, { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import { Offer } from '@/models';
 import { getOffers } from '@/services/apis';
 
