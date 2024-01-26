@@ -16,13 +16,10 @@ const OfferCard: FC<Offer> = ({
 	category,
 }) => {
 	const publishedDate = useMemo(() => new Date(published).toLocaleDateString(), [published]);
-	const simplifiedTitle = useMemo(() => {
-		if (title.length > 50) {
-			return `${title.slice(0, 35)}...`;
-		} else {
-			return title;
-		}
-	}, [author.name]);
+	const simplifiedTitle = useMemo(
+		() => (title.length > 50 ? `${title.slice(0, 35)}...` : title),
+		[author.name]
+	);
 	return (
 		<li
 			key={id}
