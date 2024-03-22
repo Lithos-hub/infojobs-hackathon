@@ -3,7 +3,6 @@
 @tailwind utilities;
 
 /* Fonts */
-
 @font-face {
 	font-family: 'SF Pro';
 	src: url('/fonts/SF-Pro.ttf') format('truetype');
@@ -16,7 +15,6 @@
 }
 
 /* Common */
-
 html,
 body {
 	@apply bg-slate-100 dark:bg-black text-primary-1;
